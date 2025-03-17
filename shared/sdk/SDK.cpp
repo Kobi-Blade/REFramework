@@ -14,7 +14,7 @@ void initialize_sdk() {
     }
 
     spdlog::info("Initializing REFramework SDK...");
-    spdlog::info("REFramework SDK: https://github.com/praydog/REFramework");
+    spdlog::info("REFramework SDK: https://github.com/Kobi-Blade/REFramework");
 
     reframework::get_types();
     reframework::get_globals();

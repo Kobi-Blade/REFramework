@@ -248,7 +248,7 @@ try {
 
 REFramework::REFramework(HMODULE reframework_module)
     : m_game_module{GetModuleHandle(0)}
-    , m_logger{spdlog::basic_logger_mt("REFramework", (get_persistent_dir("re2_framework_log.txt")).string(), true)}
+    , m_logger{spdlog::basic_logger_mt("REFramework", (get_persistent_dir() / "reframework" / "re2_framework_log.txt").string(), true)}
     {
 
     s_reframework_module = reframework_module;
@@ -298,6 +298,8 @@ REFramework::REFramework(HMODULE reframework_module)
 
 #ifdef DEBUG
     spdlog::set_level(spdlog::level::debug);
+#else
+    spdlog::set_level(spdlog::level::warn);
 #endif
 
     // Create the typedef for RtlGetVersion
@@ -1692,10 +1694,9 @@ void REFramework::draw_about() {
 
     ImGui::TreePush("About");
 
-    ImGui::Text("Author: praydog");
-    ImGui::Text("Inspired by the Kanan project.");
-    ImGui::Text("https://github.com/praydog/REFramework");
+    ImGui::Text("Authors: praydog, Kobi-Blade");
     ImGui::Text("http://praydog.com");
+    ImGui::Text("https://github.com/Kobi-Blade/REFramework");
     ImGui::Text("Branch: %s", REF_BRANCH);
     ImGui::Text("Commits: %i", REF_TOTAL_COMMITS);
     ImGui::Text("Commit hash: %s", std::format("{:.8}", REF_COMMIT_HASH).c_str());
@@ -1919,7 +1920,7 @@ bool REFramework::initialize() {
 
         set_imgui_style();
 
-        static const auto imgui_ini = (get_persistent_dir() / "ref_ui.ini").string();
+        static const auto imgui_ini = (get_persistent_dir() / "reframework" / "ref_ui.ini").string();
         ImGui::GetIO().IniFilename = imgui_ini.c_str();
 
         spdlog::info("Initializing ImGui Win32");
@@ -1982,7 +1983,7 @@ bool REFramework::initialize() {
 
         set_imgui_style();
 
-        static const auto imgui_ini = (get_persistent_dir() / "ref_ui.ini").string();
+        static const auto imgui_ini = (get_persistent_dir() / "reframework" / "ref_ui.ini").string();
         ImGui::GetIO().IniFilename = imgui_ini.c_str();
         
         if (!ImGui_ImplWin32_Init(m_wnd)) {

@@ -3,7 +3,7 @@
 #include <utility/Module.hpp>
 #include "REFramework.hpp"
 
-#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/null_sink.h>
 
 #include "LooseFileLoader.hpp"
 
@@ -13,8 +13,8 @@ LooseFileLoader::LooseFileLoader()
 {
     g_loose_file_loader = this;
 
-    m_logger = spdlog::basic_logger_mt("LooseFileLoader", REFramework::get_persistent_dir("reframework_accessed_files.txt").string(), true);
-    m_loose_file_logger = spdlog::basic_logger_mt("LooseFileLoader2", REFramework::get_persistent_dir("reframework_loose_files.txt").string(), true);
+    m_logger = spdlog::create<spdlog::sinks::null_sink_mt>("LooseFileLoader");
+    m_loose_file_logger = spdlog::create<spdlog::sinks::null_sink_mt>("LooseFileLoader2");
 
     m_logger->set_level(spdlog::level::info);
     m_logger->flush_on(spdlog::level::info);

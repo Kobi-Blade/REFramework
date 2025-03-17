@@ -13,13 +13,14 @@ IF "%REF_TAG%"=="" (SET REF_TAG=no_tag)
 FOR /F "tokens=*" %%c IN ('git describe --tags --long') DO (
 FOR /F "tokens=1,2 delims=-" %%a IN ("%%c") DO (
 SET REF_TAG_LONG=%%a
-SET REF_COMMITS_PAST_TAG=%%b
+SET REF_COMMITS_PAST_TAG=83
 )
 )
 
 IF "%REF_COMMITS_PAST_TAG%"=="" (SET REF_COMMITS_PAST_TAG=0)
 
 FOR /F "tokens=*" %%b IN ('git rev-parse --abbrev-ref HEAD') DO (SET REF_BRANCH=%%b)
+IF /I "%REF_BRANCH%"=="HEAD" (SET REF_BRANCH=experimental)
 
 FOR /F "tokens=*" %%n IN ('git rev-list --count HEAD') DO (SET REF_TOTAL_COMMITS=%%n)
 IF "%REF_TOTAL_COMMITS%"=="" (SET REF_TOTAL_COMMITS=0)

@@ -1,0 +1,38 @@
+name: Build REFramework
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+env:
+  BUILD_CONFIGURATION: Release
+  
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    strategy:
+      matrix:
+        target: [MHWILDS]
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Configure CMake
+        run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=${{env.BUILD_CONFIGURATION}} -DDEVELOPER_MODE=ON "-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+
+      - name: Build REFramework
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_CONFIGURATION}} --target ${{matrix.target}}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{matrix.target}}
+          path: ${{github.workspace}}/build/bin/${{matrix.target}}/dinput8.dll
+
